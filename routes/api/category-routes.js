@@ -17,9 +17,19 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
+  try{
+    const category = await Category.findOne({
+      where: {id: req.params.id},
+      include: [{model: Product}]
+    });
+    res.status(200).json(category);
+  }catch(error){
+    console.log("\n\nERROR\n",error);
+    res.status(500).json("INTERNAL ERROR");
+  }
 });
 
 router.post('/', (req, res) => {

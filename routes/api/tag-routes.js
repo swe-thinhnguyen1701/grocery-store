@@ -17,9 +17,19 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
+  try{
+    const tag = await Tag.findOne({
+      where: {id: req.params.id},
+      include: [{model: Product}]
+    });
+    res.status(200).json(tag);
+  }catch(error){
+    console.log("\n\nERROR\n",error);
+    res.status(500).json("INTERNAL ERROR");
+  }
 });
 
 router.post('/', (req, res) => {

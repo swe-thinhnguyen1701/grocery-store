@@ -7,7 +7,9 @@ router.get('/', async (req, res) => {
   // find all categories
   // be sure to include its associated Products
   try {
-    const categories = await Category.findAll();
+    const categories = await Category.findAll({
+      include: [{model: Product}]
+    });
     res.status(200).json(categories);
   } catch (error) {
     console.log("INTERNAL ERROR", error);

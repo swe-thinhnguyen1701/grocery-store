@@ -26,6 +26,10 @@ router.get('/:id', async (req, res) => {
       where: { id: req.params.id },
       include: [{ model: Product }]
     });
+    if (category === null) {
+      res.status(404).json("Cannot find a category with given id");
+      return;
+    }
     res.status(200).json(category);
   } catch (error) {
     console.log("\n\nERROR\n", error);
@@ -47,13 +51,17 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   // update a category by its `id` value
-  try{
+  try {
     const updateCategory = await Category.update(
-      {category_name: req.body.category_name},
-      {where: {id: req.params.id }}
+      { category_name: req.body.category_name },
+      { where: { id: req.params.id } }
     );
+    if (updateCategory === null) {
+      res.status(404).json("Cannot find a category with given id");
+      return;
+    }
     res.status(200).json(updateCategory);
-  }catch(error){
+  } catch (error) {
     console.log("\n\nERROR\n", error);
     res.status(500).json("INTERNAL ERROR");
   }
@@ -61,12 +69,12 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
-  try{
+  try {
     const deleteCategory = await Category.destroy({
-      where: {id: req.params.id}
+      where: { id: req.params.id }
     });
     res.status(200).json(deleteCategory);
-  }catch(error){
+  } catch (error) {
     console.log("\n\nERROR\n", error);
     res.status(500).json("INTERNAL ERROR");
   }

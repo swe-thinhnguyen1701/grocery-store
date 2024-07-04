@@ -26,6 +26,10 @@ router.get('/:id', async (req, res) => {
       where: {id: req.params.id},
       include: [{model: Category}, {model: Tag}]
     });
+    if(product === null){
+      res.status(404).json("Cannot find a product with given id");
+      return;
+    }
     res.status(200).json(product);
   }catch(error){
     console.log("\n\nERROR\n",error);

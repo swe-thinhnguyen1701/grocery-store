@@ -26,6 +26,10 @@ router.get('/:id', async (req, res) => {
       where: { id: req.params.id },
       include: [{ model: Product }]
     });
+    if (tag === null) {
+      res.status(404).json("Cannot find a tag with given id");
+      return;
+    }
     res.status(200).json(tag);
   } catch (error) {
     console.log("\n\nERROR\n", error);
@@ -53,6 +57,10 @@ router.put('/:id', async (req, res) => {
       { tag_name: req.body.tag_name },
       { where: { id: req.params.id } }
     );
+    if (updateTag === null) {
+      res.status(404).json("Cannot find a tag with given id");
+      return;
+    }
     res.status(200).json(updateTag);
   } catch (error) {
     console.log("\n\nERROR\n", error);
